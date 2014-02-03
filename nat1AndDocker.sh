@@ -1,11 +1,6 @@
 #!/bin/sh
 set -e
-ip route del default
-ip route add default via 10.2.22.167
-sudo echo "up route add default gw 10.2.22.167" >> /etc/network/interfaces
-cat /etc/dhcp/dhclient.conf | sed "s/routers,//" > /tmp/dhclient.conf
-sudo mv /tmp/dhclient.conf /etc/dhcp/dhclient.conf
-sudo /etc/init.d/networking restart
+
 
 # The following was taken from https://get.docker.io 
 
@@ -44,6 +39,13 @@ if [ "$(whoami 2>/dev/null || true)" != 'root' ]; then
 		exit 1
 	fi
 fi
+
+ip route del default
+ip route add default via 10.2.22.167
+sudo echo "up route add default gw 10.2.22.167" >> /etc/network/interfaces
+cat /etc/dhcp/dhclient.conf | sed "s/routers,//" > /tmp/dhclient.conf
+sudo mv /tmp/dhclient.conf /etc/dhcp/dhclient.conf
+sudo /etc/init.d/networking restart
 
 curl=''
 if command_exists curl; then
